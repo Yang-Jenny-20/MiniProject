@@ -64,10 +64,12 @@ CMultiJigEntity::CMultiJigEntity(const AcGePoint3d& centerPoint)
 
 CMultiJigEntity::~CMultiJigEntity()
 {
+
 	for (int i = 0; i < m_Arr.length(); i++)
 	{
 		delete m_Arr[i];
 	}
+	
 }
 
 inline void CMultiJigEntity::setRadius(double dRadius)
@@ -80,6 +82,7 @@ inline void CMultiJigEntity::setRadius(double dRadius)
 
 inline void CMultiJigEntity::setLength(AcGePoint3d& centerPoint, double dRadius)
 {
+
 	AcGePoint3d a = centerPoint;
 
 	AcGePoint3d b = AcGePoint3d(centerPoint[0], centerPoint[1] + dRadius, centerPoint[2]);
@@ -100,6 +103,7 @@ inline void CMultiJigEntity::setLength(AcGePoint3d& centerPoint, double dRadius)
 
 void CMultiJigEntity::appendToCurrentSpace()
 {
+
 	AcDbDatabase* pDb = acdbCurDwg();
 
 	AcDbBlockTable* pBlockTable;
@@ -139,7 +143,9 @@ void CMultiJigEntity::appendToCurrentSpace()
 
 class CMultiJig : public AcEdJig
 {
+
 public:
+
 	CMultiJig(const AcGePoint3d& centerPoint);
 
 	void doIt();
@@ -165,6 +171,7 @@ CMultiJig::CMultiJig(const AcGePoint3d& centerPoint) : m_CenterPoint(centerPoint
 
 AcEdJig::DragStatus CMultiJig::sampler()
 {
+
 	static double dTempRadius;
 
 	DragStatus stat = acquireDist(m_dRadius, m_CenterPoint);
@@ -185,6 +192,7 @@ AcEdJig::DragStatus CMultiJig::sampler()
 
 Adesk::Boolean  CMultiJig::update()
 {
+
 	m_pEnt->setRadius(m_dRadius);
 
 	m_pEnt->setLength(m_CenterPoint, m_dRadius);
@@ -194,7 +202,9 @@ Adesk::Boolean  CMultiJig::update()
 
 AcDbEntity* CMultiJig::entity() const
 {
+
 	return m_pEnt;
+	
 }
 
 void CMultiJig::doIt()
@@ -214,6 +224,7 @@ void CMultiJig::doIt()
 
 static void MyJig(void)
 {
+
 	AcGePoint3d centerPoint;
 
 	if (RTNORM == acedGetPoint(NULL, _T("/nPlease input the center point:"), asDblArray(centerPoint)))
@@ -248,6 +259,7 @@ unloadApp()
 extern "C" AcRx::AppRetCode
 acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 {
+
 	switch (msg) {
 
 	case AcRx::kInitAppMsg:
