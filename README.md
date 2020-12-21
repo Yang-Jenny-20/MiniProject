@@ -1,6 +1,4 @@
-#include <windows.h>
-
-#include <a>
+#include <windows.h> #include <algorithm>
 
 #include "tchar.h"
 
