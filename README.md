@@ -13,6 +13,7 @@ using namespace std;
 
 class CMultiJigEntity : public AcDbEntity
 {
+
 public:
 
 	CMultiJigEntity(const AcGePoint3d& centerPoint);
@@ -175,7 +176,7 @@ AcEdJig::DragStatus CMultiJig::sampler()
 	}
 	else if (stat == AcEdJig::kNormal)
 	{
-		//无变化，不更新
+		
 		return AcEdJig::kNoChange;
 	}
 
@@ -204,7 +205,6 @@ void CMultiJig::doIt()
 
 	setDispPrompt(_T("/nPlease input the radius:"));
 
-	//调用sampler，update，entity函数更新实例的各个属性
 	if (drag() == AcEdJig::kNormal)
 	{
 		m_pEnt->appendToCurrentSpace();
