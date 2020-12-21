@@ -11,15 +11,14 @@
 
 using namespace std;
 
-//辅助实体类
-//包括一个圆，三条直线
 class CMultiJigEntity : public AcDbEntity
 {
 public:
 
 	CMultiJigEntity(const AcGePoint3d& centerPoint);
+	
 	~CMultiJigEntity();
-	//接口
+	
 	void setRadius(double dRadius);
 
 	void setLength(AcGePoint3d& centerPoint, double dRadius);
@@ -27,7 +26,6 @@ public:
 	void appendToCurrentSpace();
 private:
 
-	//实体组成部分用一个Entity数组表示
 	AcArray<AcDbEntity*> m_Arr;
 
 };
@@ -36,15 +34,13 @@ CMultiJigEntity::CMultiJigEntity(const AcGePoint3d& centerPoint)
 {
 
 	AcDbCircle* pCirc;
-
-	//初始化圆
+	
 	double radius = 0.0001;
 
 	pCirc = new AcDbCircle(centerPoint, AcGeVector3d::kZAxis, radius);
 
 	m_Arr.append(pCirc);
 
-	//画三条线
 	AcGePoint3d a = centerPoint;
 
 	AcGePoint3d b = AcGePoint3d(centerPoint[0], centerPoint[1] + radius, 0.0);
@@ -68,14 +64,12 @@ CMultiJigEntity::CMultiJigEntity(const AcGePoint3d& centerPoint)
 
 CMultiJigEntity::~CMultiJigEntity()
 {
-	//析构，释放内存
 	for (int i = 0; i < m_Arr.length(); i++)
 	{
 		delete m_Arr[i];
 	}
 }
 
-//update()调用的函数，通过输入更新圆的半径
 inline void CMultiJigEntity::setRadius(double dRadius)
 {
 
@@ -84,7 +78,6 @@ inline void CMultiJigEntity::setRadius(double dRadius)
 	pCirc->setRadius(dRadius);
 }
 
-//update()调用的函数，通过输入的半径和圆心计算出三条直线的位置
 inline void CMultiJigEntity::setLength(AcGePoint3d& centerPoint, double dRadius)
 {
 	AcGePoint3d a = centerPoint;
@@ -144,7 +137,6 @@ void CMultiJigEntity::appendToCurrentSpace()
 	m_Arr.removeAll();
 }
 
-//继承jig类
 class CMultiJig : public AcEdJig
 {
 public:
@@ -152,12 +144,10 @@ public:
 
 	void doIt();
 
-	// 重写AcEdJig类的三个函数
 	virtual DragStatus sampler();
 
 	virtual Adesk::Boolean update();
 
-	//返回一个实体的指针
 	virtual AcDbEntity* entity() const;
 	
 private:
@@ -173,7 +163,6 @@ CMultiJig::CMultiJig(const AcGePoint3d& centerPoint) : m_CenterPoint(centerPoint
 {
 }
 
-//第一步采数据
 AcEdJig::DragStatus CMultiJig::sampler()
 {
 	static double dTempRadius;
@@ -194,7 +183,6 @@ AcEdJig::DragStatus CMultiJig::sampler()
 
 }
 
-//更新
 Adesk::Boolean  CMultiJig::update()
 {
 	m_pEnt->setRadius(m_dRadius);
@@ -211,7 +199,7 @@ AcDbEntity* CMultiJig::entity() const
 
 void CMultiJig::doIt()
 {
-	//初始化一个实例
+	
 	m_pEnt = new CMultiJigEntity(m_CenterPoint);
 
 	setDispPrompt(_T("/nPlease input the radius:"));
@@ -225,7 +213,6 @@ void CMultiJig::doIt()
 	delete m_pEnt;
 }
 
-//测试函数
 static void MyJig(void)
 {
 	AcGePoint3d centerPoint;
@@ -244,7 +231,7 @@ static void MyJig(void)
 void
 initApp()
 {
-	//调用Myjig函数
+	
 	acedRegCmds->addCommand(_T("ASDK_VISUAL_ELLIPSE"),
 		_T("ASDK_BenzLogo"), _T("BenzLogo"), ACRX_CMD_MODAL,
 		MyJig);
@@ -260,7 +247,6 @@ unloadApp()
 }
 
 extern "C" AcRx::AppRetCode
-//加载entry
 acrxEntryPoint(AcRx::AppMsgCode msg, void* appId)
 {
 	switch (msg) {
