@@ -1,14 +1,12 @@
 #include <windows.h>
 
-
-#include <algorithm>
-
-#include <cmath>
-
 #include "tchar.h"
 
 #include "arxHeaders.h"
 
+#include <algorithm>
+
+#include <cmath>
 
 using namespace std;
 
