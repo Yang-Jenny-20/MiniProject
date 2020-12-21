@@ -1,8 +1,8 @@
 #include <windows.h>
 
-/*#include <algorithm>
+#include <algorithm>
 	
-#include <cmath>*/
+#include <cmath>
 
 #include "tchar.h"
 
